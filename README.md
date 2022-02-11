@@ -2,6 +2,7 @@
 Find papers by keywords and venues. Then download it automatically.
 
 ## How to use this?
+
 ### CLI
 
 ```shell
@@ -25,6 +26,7 @@ venue_list=['KDD','IJCAI']
 search(keyword_list=keyword_list,venue_list=venue_list,min_year=2016,max_year=2021,output='result.csv')
 ```
 
+Your can find venues' name in [there](https://dblp.org/db/journals/index.html).
 
 ## Todo
 - [x] Search papers.
