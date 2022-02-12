@@ -10,8 +10,8 @@ python search.py -k "knowledge tracing,knowledge trace" -v "KDD,IJCAI" -o data/k
 ```
 - `min_year` : paper >= min_year
 - `max_year` : paper<=max_year
-- `-k` : keywords, different keywords split use `,`
-- `-v` : venue, split using `,`. If `default`, will use the default venues.
+- `k` : keywords, different keywords split use `,`
+- `v` : venue, split using `,`. If `default`, will use the default venues.
 - `o` : output file path
 
 
