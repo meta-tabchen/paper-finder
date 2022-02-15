@@ -33,7 +33,7 @@ def download_from_df(df,save_dir):
         doi = row['doi'].split(",")[0]
         venue_save_dir = os.path.join(save_dir,row['venue'])
         os.makedirs(venue_save_dir,exist_ok=True)
-        save_path = os.path.join(save_dir,f"{title}.pdf")
+        save_path = os.path.join(venue_save_dir,f"{title}.pdf")
         if not os.path.exists(save_path):
             state = download_pdf(doi,title,save_path)
         else:

@@ -1,7 +1,3 @@
-import requests
-import pandas as pd
-from tqdm import tqdm
-from utils.config import api_url
 from utils.config import default_venue_list
 from utils.search import search
 
