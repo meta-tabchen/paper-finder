@@ -1,4 +1,0 @@
-requests
-pandas
-tqdm
-beautifulsoup4

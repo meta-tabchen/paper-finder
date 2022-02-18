@@ -1,4 +1,4 @@
-from utils.download import download_from_df
+from .utils.download import download_from_df
 import pandas as pd
 
 if __name__ =='__main__':

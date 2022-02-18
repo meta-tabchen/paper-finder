@@ -1,5 +1,5 @@
-from utils.config import default_venue_list
-from utils.search import search
+from .utils.config import default_venue_list
+from .utils.search import search
 
 if __name__ =='__main__':
 
