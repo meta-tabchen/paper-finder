@@ -5,7 +5,7 @@ Find papers by keywords and venues. Then download it automatically.
 Install and update using `pip`:
 
 ```shell
- $ pip install -U paper-finder
+pip install -U paper-finder
 ```
 
 ## Examples
