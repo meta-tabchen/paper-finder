@@ -3,9 +3,11 @@ import pandas as pd
 from tqdm import tqdm
 from .config import api_url
 from .config import default_venue_list
+from urllib.parse import quote
 
 def search_one(keyword, venue, min_year,max_year):
-    url = api_url.format(keyword, venue)
+    url = api_url.format(quote(keyword), quote(venue))
+    print(url)
     data = requests.get(url).json()
     if 'hit' not in data['result']['hits']:
         return pd.DataFrame()

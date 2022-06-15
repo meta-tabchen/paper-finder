@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="paper_finder",
-    version="0.0.3",
+    version="0.0.4",
     author="TabChen",
     author_email="2808581543@qq.com",
     description="Finder papers",
