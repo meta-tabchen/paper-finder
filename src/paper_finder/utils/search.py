@@ -28,3 +28,4 @@ def search(keyword_list,venue_list,min_year,max_year,output):
     df = pd.concat(df_list)
     df['title'] = df['title'].apply(lambda x:x.strip("."))
     df.to_csv(output,index=False)
+    return df

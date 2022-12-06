@@ -7,8 +7,35 @@ Install and update using `pip`:
 ```shell
 pip install -U paper-finder
 ```
+## 功能
+### 论文检索
+利用 [dblp](https://dblp.org/faq/How+to+use+the+dblp+search+API.html) 提供的API。
 
+### 论文引用
+利用 [semanticscholar](https://www.semanticscholar.org/product/api), **5分钟内只能请求100次**，文献多的话可能会比较慢。
+
+### 论文代码获取
+
+利用 [paperswithcode](https://paperswithcode.com/api/v1/docs/) 提供的代码进行代码检查。
+
+
+## 常用的期刊列表
+```python
+CV_A = ["CVPR", "ICCV", "TIP", "TPAMI", "TVCG", "TOG", "SIGGRAPH", "IJCV"]
+DM_A = ["KDD", "WWW", "ICDE", "TKDE"]
+ML_A = ["ICML", "NIPS", "NeurIPS"]
+NLP_A = ["ACL", "SIGIR"]
+overall_A = ["AAAI", "IJCAI", "CSCW", "CHI", "Ubicomp", "MM"]
+ref_ccf_a = ['AAAI', 'NIPS','ACL','CVPR','ICCV','ICML','IJCAI','WWW','KDD','SIGIR']
+ref_ccf_b = ['EMNLP','ECCV','COLING','CIKM','WSDM','NAACL']
+ref_other = ['ICLR']
+refs = ref_ccf_a + ref_ccf_b + ref_other
+```
 ## Examples
+点击这里 [查看](examples/quick_start.ipynb)
+
+### Quick Start
+
 ### Search
 
 ```python
@@ -59,7 +86,7 @@ python download.py -i data/kt_result.csv  -o pdfs
 
 ## Todo
 - [x] Search papers.
-- [x] Download papers
+- [ ] Download papers
 
 ## Author Warning
 This code is only used for academic communication. 

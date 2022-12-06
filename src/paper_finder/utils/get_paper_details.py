@@ -5,28 +5,29 @@ import traceback
 from tqdm import tqdm_notebook
 import time
 from multiprocessing.pool import ThreadPool
-from loguru import logger
 
+from .config import max_try,wait_time,debug,logger
 
 api_paper_detail = "https://api.semanticscholar.org/graph/v1/paper/{}?fields=title,citations,references,year,abstract,venue,authors,referenceCount,citationCount"
 api_search_by_words = "https://api.semanticscholar.org/graph/v1/paper/search?query={}&limit=1"
 
-max_try = 100
-wait_time = 60
-debug = True
+
 
 
 def get_request_core(api):
-    result = requests.get(api).json()
+    try:
+        result = requests.get(api).json()
+    except:
+        logger.debug(traceback.format_exc())
+        result = {}
     return result
-
 
 def get_request(api):
     success = False
     for i in range(max_try):
         result = get_request_core(api)
         if debug:
-            msg = f"api={api},num={i},result={result}"
+            msg = f"api={api},num={i}"
             logger.debug(msg)
         if "message" in result and result['message'] == "Too Many Requests":
             logger.info("start wait")
@@ -66,7 +67,7 @@ def get_paper_detail(paper_id):
         return {"raw_data": data, "citations": citations, "references": references, "state": True}
 
 
-def get_paper_detail_by_title(title):
+def get_paper_detail_by_title_core(title):
     """获取ID+用ID查询信息"""
     paper_id = titlt2id(title)
     if len(paper_id) != 0:
@@ -76,10 +77,10 @@ def get_paper_detail_by_title(title):
     return data
 
 
-def get_multi_paper_details(titles, n_jobs=5):
+def get_paper_details(titles, n_jobs=5):
     """并行获取"""
     p = ThreadPool(n_jobs)
-    paper_detail_list = p.map(get_paper_detail_by_title, titles)
+    paper_detail_list = p.map(get_paper_detail_by_title_core, titles)
     p.close()
     # 获取引用信息
     paper_refs_list = []
@@ -91,21 +92,23 @@ def get_multi_paper_details(titles, n_jobs=5):
     return paper_refs_list, paper_detail_list
 
 
-if __name__ == "__main__":
-    search_result_path = "model_ensamble_result.csv"
-    df_result = pd.read_csv(search_result_path).drop_duplicates("title")
-
-    paper_refs_list, paper_detail_list = get_multi_paper_details(
-        df_result['title'], n_jobs=2)
-
-    for col in ['abstract', 'referenceCount', 'citationCount']:
+def add_details(df,output,n_jobs=5,add_cols = ['abstract', 'referenceCount', 'citationCount']):
+    paper_refs_list, paper_detail_list = get_paper_details(
+        df['title'], n_jobs=n_jobs)
+    for col in add_cols:
         col_results = []
         for paper_info in paper_detail_list:
             if not paper_info['state']:
                 col_results.append("-")
             else:
                 col_results.append(paper_info['raw_data'][col])
-        df_result[col] = col_results
+        df[col] = col_results
+    df.to_csv(output,index=False)
+    return df
 
+if __name__ == "__main__":
+    search_result_path = "kt_result.csv"
+    df_result = pd.read_csv(search_result_path).drop_duplicates("title")
+    df_result = add_details(df_result)
     df_result.to_csv(search_result_path.replace(
         '.csv', '_add_details.csv'), index=False)
