@@ -59,12 +59,17 @@ def add_opensource_url(df,output):
     result_list = []
     url_list = []
     url_official_list = []
+    url_pdf_list = []
+    conference_url_pdf_list = []
     for title in tqdm(df['title']):
         logger.info(f"Start process {title}")
         result = get_repos_info(title)
-        url = url_official = '-'
+        url = url_official = url_pdf= conference_url_pdf = '-'
         if len(result['paper_details']) != 0:
-            repositories = result['paper_details']['repositories']['results']
+            paper_details = result['paper_details']
+            url_pdf = paper_details['url_pdf']
+            conference_url_pdf = paper_details['conference_url_pdf']
+            repositories = paper_details['repositories']['results']
             repositories = sorted(repositories, key=lambda x: -x['stars'])
             if len(repositories) != 0:
                 top1_repo = repositories[0]
@@ -75,12 +80,16 @@ def add_opensource_url(df,output):
                 if len(repo_official_list) != 0:
                     repo_official = repo_official_list[0]
                     url_official = repo_official['url']
-
+        
+        url_pdf_list.append(url_pdf)
+        conference_url_pdf_list.append(conference_url_pdf)
         url_list.append(url)
         url_official_list.append(url_official)
         result_list.append(result)
     df['code_url'] = url_list
     df['code_url_official'] = url_official_list
+    df['url_pdf'] = url_pdf_list
+    df['conference_url_pdf'] = conference_url_pdf_list
     df['repo_results'] = result_list
     df.to_csv(output,index=False)
     return df
